@@ -44,31 +44,73 @@
 ##  **Скриншоты** <a id="скриншоты"></a>
 
 ###  Этап 1: Базовая инфраструктура
-- [**01-balancer-site.png**](https://github.com/DudnikovDaniil/Coursework-for-the-DevOps-Engineer-from-Scratch-profession/raw/main/screenshots/01-balancer-site.png) — сайт через балансировщик
-- [**02-load-balancing.png**](https://github.com/DudnikovDaniil/Coursework-for-the-DevOps-Engineer-from-Scratch-profession/raw/main/screenshots/02-load-balancing.png) — балансировка между серверами
-- [**03-vm-list.png**](https://github.com/DudnikovDaniil/Coursework-for-the-DevOps-Engineer-from-Scratch-profession/raw/main/screenshots/03-vm-list.png) — список всех ВМ
-- [**04-alb-details.png**](https://github.com/DudnikovDaniil/Coursework-for-the-DevOps-Engineer-from-Scratch-profession/raw/main/screenshots/04-alb-details.png) — детали балансировщика
-- [**05-terraform-resources.png**](https://github.com/DudnikovDaniil/Coursework-for-the-DevOps-Engineer-from-Scratch-profession/raw/main/screenshots/05-terraform-resources.png) — ресурсы Terraform
-- [**06-ansible-ping.png**](https://github.com/DudnikovDaniil/Coursework-for-the-DevOps-Engineer-from-Scratch-profession/raw/main/screenshots/06-ansible-ping.png) — Ansible ping до всех хостов
-- [**07-nginx-status.png**](https://github.com/DudnikovDaniil/Coursework-for-the-DevOps-Engineer-from-Scratch-profession/raw/main/screenshots/07-nginx-status.png) — статус nginx на web1
-- [**08-network-subnets.png**](https://github.com/DudnikovDaniil/Coursework-for-the-DevOps-Engineer-from-Scratch-profession/raw/main/screenshots/08-network-subnets.png) — сеть и подсети
-- [**09-ssh-access.png**](https://github.com/DudnikovDaniil/Coursework-for-the-DevOps-Engineer-from-Scratch-profession/raw/main/screenshots/09-ssh-access.png) — доступ к bastion
-- [**10-terraform-outputs.png**](https://github.com/DudnikovDaniil/Coursework-for-the-DevOps-Engineer-from-Scratch-profession/raw/main/screenshots/10-terraform-outputs.png) — outputs Terraform
-- [**11-yc-resources-overview.png**](https://github.com/DudnikovDaniil/Coursework-for-the-DevOps-Engineer-from-Scratch-profession/raw/main/screenshots/11-yc-resources-overview.png) — обзор ресурсов в YC
+
+<img src="https://github.com/DudnikovDaniil/Coursework-for-the-DevOps-Engineer-from-Scratch-profession/raw/main/screenshots/01-balancer-site.png" width="600">
+*01 — сайт через балансировщик*
+
+<img src="https://github.com/DudnikovDaniil/Coursework-for-the-DevOps-Engineer-from-Scratch-profession/raw/main/screenshots/02-load-balancing.png" width="600">
+*02 — балансировка между серверами*
+
+<img src="https://github.com/DudnikovDaniil/Coursework-for-the-DevOps-Engineer-from-Scratch-profession/raw/main/screenshots/03-vm-list.png" width="600">
+*03 — список всех ВМ*
+
+<img src="https://github.com/DudnikovDaniil/Coursework-for-the-DevOps-Engineer-from-Scratch-profession/raw/main/screenshots/04-alb-details.png" width="600">
+*04 — детали балансировщика*
+
+<img src="https://github.com/DudnikovDaniil/Coursework-for-the-DevOps-Engineer-from-Scratch-profession/raw/main/screenshots/05-terraform-resources.png" width="600">
+*05 — ресурсы Terraform*
+
+<img src="https://github.com/DudnikovDaniil/Coursework-for-the-DevOps-Engineer-from-Scratch-profession/raw/main/screenshots/06-ansible-ping.png" width="600">
+*06 — Ansible ping до всех хостов*
+
+<img src="https://github.com/DudnikovDaniil/Coursework-for-the-DevOps-Engineer-from-Scratch-profession/raw/main/screenshots/07-nginx-status.png" width="600">
+*07 — статус nginx на web1*
+
+<img src="https://github.com/DudnikovDaniil/Coursework-for-the-DevOps-Engineer-from-Scratch-profession/raw/main/screenshots/08-network-subnets.png" width="600">
+*08 — сеть и подсети*
+
+<img src="https://github.com/DudnikovDaniil/Coursework-for-the-DevOps-Engineer-from-Scratch-profession/raw/main/screenshots/09-ssh-access.png" width="600">
+*09 — доступ к bastion*
+
+<img src="https://github.com/DudnikovDaniil/Coursework-for-the-DevOps-Engineer-from-Scratch-profession/raw/main/screenshots/10-terraform-outputs.png" width="600">
+*10 — outputs Terraform*
+
+<img src="https://github.com/DudnikovDaniil/Coursework-for-the-DevOps-Engineer-from-Scratch-profession/raw/main/screenshots/11-yc-resources-overview.png" width="600">
+*11 — обзор ресурсов в YC*
 
 ###  Этап 2: Мониторинг
-- [**12-dashboard-node-exporter.png**](https://github.com/DudnikovDaniil/Coursework-for-the-DevOps-Engineer-from-Scratch-profession/raw/main/screenshots/12-dashboard-node-exporter.png) — дашборд Node Exporter
-- [**13-dashboard-nginx.png**](https://github.com/DudnikovDaniil/Coursework-for-the-DevOps-Engineer-from-Scratch-profession/raw/main/screenshots/13-dashboard-nginx.png) — дашборд Nginx
-- [**14-explore-up.png**](https://github.com/DudnikovDaniil/Coursework-for-the-DevOps-Engineer-from-Scratch-profession/raw/main/screenshots/14-explore-up.png) — запрос up в Explore
-- [**15-prometheus-targets.png**](https://github.com/DudnikovDaniil/Coursework-for-the-DevOps-Engineer-from-Scratch-profession/raw/main/screenshots/15-prometheus-targets.png) — таргеты Prometheus
-- [**16-grafana-datasource.png**](https://github.com/DudnikovDaniil/Coursework-for-the-DevOps-Engineer-from-Scratch-profession/raw/main/screenshots/16-grafana-datasource.png) — источник данных в Grafana
-- [**17-load-balancer-test.png**](https://github.com/DudnikovDaniil/Coursework-for-the-DevOps-Engineer-from-Scratch-profession/raw/main/screenshots/17-load-balancer-test.png) — тест балансировщика
-- [**18-yc-vm-list.png**](https://github.com/DudnikovDaniil/Coursework-for-the-DevOps-Engineer-from-Scratch-profession/raw/main/screenshots/18-yc-vm-list.png) — все ВМ в Yandex Cloud
-- [**19-terraform-state.png**](https://github.com/DudnikovDaniil/Coursework-for-the-DevOps-Engineer-from-Scratch-profession/raw/main/screenshots/19-terraform-state.png) — состояние Terraform
-- [**20-ansible-ping-final.png**](https://github.com/DudnikovDaniil/Coursework-for-the-DevOps-Engineer-from-Scratch-profession/raw/main/screenshots/20-ansible-ping-final.png) — финальный Ansible ping
+
+<img src="https://github.com/DudnikovDaniil/Coursework-for-the-DevOps-Engineer-from-Scratch-profession/raw/main/screenshots/12-dashboard-node-exporter.png" width="600">
+*12 — дашборд Node Exporter*
+
+<img src="https://github.com/DudnikovDaniil/Coursework-for-the-DevOps-Engineer-from-Scratch-profession/raw/main/screenshots/13-dashboard-nginx.png" width="600">
+*13 — дашборд Nginx*
+
+<img src="https://github.com/DudnikovDaniil/Coursework-for-the-DevOps-Engineer-from-Scratch-profession/raw/main/screenshots/14-explore-up.png" width="600">
+*14 — запрос up в Explore*
+
+<img src="https://github.com/DudnikovDaniil/Coursework-for-the-DevOps-Engineer-from-Scratch-profession/raw/main/screenshots/15-prometheus-targets.png" width="600">
+*15 — таргеты Prometheus*
+
+<img src="https://github.com/DudnikovDaniil/Coursework-for-the-DevOps-Engineer-from-Scratch-profession/raw/main/screenshots/16-grafana-datasource.png" width="600">
+*16 — источник данных в Grafana*
+
+<img src="https://github.com/DudnikovDaniil/Coursework-for-the-DevOps-Engineer-from-Scratch-profession/raw/main/screenshots/17-load-balancer-test.png" width="600">
+*17 — тест балансировщика*
+
+<img src="https://github.com/DudnikovDaniil/Coursework-for-the-DevOps-Engineer-from-Scratch-profession/raw/main/screenshots/18-yc-vm-list.png" width="600">
+*18 — все ВМ в Yandex Cloud*
+
+<img src="https://github.com/DudnikovDaniil/Coursework-for-the-DevOps-Engineer-from-Scratch-profession/raw/main/screenshots/19-terraform-state.png" width="600">
+*19 — состояние Terraform*
+
+<img src="https://github.com/DudnikovDaniil/Coursework-for-the-DevOps-Engineer-from-Scratch-profession/raw/main/screenshots/20-ansible-ping-final.png" width="600">
+*20 — финальный Ansible ping*
 
 ###  Этап 3: Резервное копирование
-- [**21-backup-policy.png**](https://github.com/DudnikovDaniil/Coursework-for-the-DevOps-Engineer-from-Scratch-profession/raw/main/screenshots/21-backup-policy.png) — политика снапшотов
+
+<img src="https://github.com/DudnikovDaniil/Coursework-for-the-DevOps-Engineer-from-Scratch-profession/raw/main/screenshots/21-backup-policy.png" width="600">
+*21 — политика снапшотов*
 
 ---
 
