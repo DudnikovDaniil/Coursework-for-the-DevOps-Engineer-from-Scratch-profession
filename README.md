@@ -26,36 +26,12 @@
 - Полный мониторинг (Prometheus + Grafana)
 - Резервное копирование (snapshots)
 
-**В ходе работы была полностью развернута отказоустойчивая инфраструктура в Yandex Cloud с использованием Terraform и Ansible. Все манифесты и плейбуки приложены в репозитории. Для воспроизведения достаточно выполнить инструкцию из README, подставив свои токены и ID.**
+*В ходе работы была полностью развернута отказоустойчивая инфраструктура в Yandex Cloud с использованием Terraform и Ansible. Все манифесты и плейбуки приложены в репозитории. Для воспроизведения достаточно выполнить инструкцию из README, подставив свои токены и ID.*
 ---
 
 ##  **Структура репозитория** <a id="структура-репозитория"></a>
 
-terraform/
-├── providers.tf     # Провайдер Yandex Cloud
-├── network.tf       # VPC и подсети
-├── security.tf      # Security groups
-├── instances.tf     # ВМ (web, bastion)
-├── nat.tf           # NAT для приватных подсетей
-├── load_balancer.tf # Балансировщик
-├── prometheus.tf    # ВМ для Prometheus
-├── grafana.tf       # ВМ для Grafana
-├── backups.tf       # Политика снапшотов
-└── variables.tf     # Переменные
-
-ansible/
-├── install_nginx.yml      # Установка nginx
-├── exporters.yml          # Node/Nginx экспортеры
-├── prometheus.yml         # Установка Prometheus
-├── grafana.yml            # Установка Grafana
-├── inventory.ini.example  # Пример инвентаря
-└── templates/
-    └── prometheus.yml.j2  # Шаблон конфига Prometheus
-
-screenshots/               # Скриншоты всех этапов
-├── 01-balancer-site.png
-├── 02-load-balancing.png
-└── ... (все 21 скриншот)
+<img src="https://github.com/DudnikovDaniil/Coursework-for-the-DevOps-Engineer-from-Scratch-profession/raw/main/screenshots/22-repo-structure.png" width="700">
 
 ##  **Технологии** <a id="технологии"></a>
 **Terraform** · **Ansible** · **Yandex Cloud** · **Prometheus** · **Grafana** · **Nginx** · **Ubuntu**
