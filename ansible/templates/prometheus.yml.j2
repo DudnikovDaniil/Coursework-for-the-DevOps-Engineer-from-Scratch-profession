@@ -1,0 +1,52 @@
+# my global config
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+# Alertmanager configuration
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets: []
+
+# Rule files
+rule_files: []
+
+# Scrape configurations
+scrape_configs:
+  # Prometheus itself
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+  # Node Exporter on web1
+  - job_name: 'node_web1'
+    static_configs:
+      - targets: ['{{ web1_ip }}:9100']
+        labels:
+          instance: 'web1'
+          role: 'web'
+
+  # Node Exporter on web2
+  - job_name: 'node_web2'
+    static_configs:
+      - targets: ['{{ web2_ip }}:9100']
+        labels:
+          instance: 'web2'
+          role: 'web'
+
+  # Nginx Exporter on web1
+  - job_name: 'nginx_web1'
+    static_configs:
+      - targets: ['{{ web1_ip }}:9113']
+        labels:
+          instance: 'web1'
+          role: 'web'
+
+  # Nginx Exporter on web2
+  - job_name: 'nginx_web2'
+    static_configs:
+      - targets: ['{{ web2_ip }}:9113']
+        labels:
+          instance: 'web2'
+          role: 'web'

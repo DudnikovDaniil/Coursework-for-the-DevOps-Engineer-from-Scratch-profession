@@ -1,0 +1,122 @@
+---
+- name: Install and configure Grafana
+  hosts: grafana
+  become: yes
+  vars:
+    prometheus_ip: "10.10.2.19"
+    grafana_port: 3000
+
+  tasks:
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+        cache_valid_time: 3600
+
+    - name: Install required packages
+      apt:
+        name:
+          - apt-transport-https
+          - software-properties-common
+          - wget
+          - curl
+        state: present
+
+    - name: Add Grafana GPG key manually
+      shell: |
+        curl -fsSL https://apt.grafana.com/gpg.key | sudo tee /usr/share/keyrings/grafana-archive-keyring.gpg > /dev/null
+
+    - name: Add Grafana repository
+      apt_repository:
+        repo: "deb https://apt.grafana.com stable main"
+        state: present
+
+    - name: Update apt cache after adding repo
+      apt:
+        update_cache: yes
+
+    - name: Install Grafana
+      apt:
+        name: grafana
+        state: present
+
+    - name: Create Prometheus datasource configuration
+      copy:
+        dest: /etc/grafana/provisioning/datasources/prometheus.yaml
+        content: |
+          apiVersion: 1
+
+          datasources:
+            - name: Prometheus
+              type: prometheus
+              access: proxy
+              url: http://{{ prometheus_ip }}:9090
+              isDefault: true
+              editable: false
+
+    - name: Create default dashboard directory
+      file:
+        path: /etc/grafana/provisioning/dashboards
+        state: directory
+        owner: grafana
+        group: grafana
+        mode: 0755
+
+    - name: Create dashboards configuration
+      copy:
+        dest: /etc/grafana/provisioning/dashboards/dashboards.yaml
+        content: |
+          apiVersion: 1
+
+          providers:
+            - name: 'default'
+              orgId: 1
+              folder: ''
+              type: file
+              disableDeletion: false
+              editable: true
+              options:
+                path: /var/lib/grafana/dashboards
+
+    - name: Create dashboards directory
+      file:
+        path: /var/lib/grafana/dashboards
+        state: directory
+        owner: grafana
+        group: grafana
+        mode: 0755
+
+    - name: Download Node Exporter Full dashboard
+      get_url:
+        url: https://grafana.com/api/dashboards/1860/revisions/36/download
+        dest: /var/lib/grafana/dashboards/node_exporter_full.json
+        owner: grafana
+        group: grafana
+        mode: 0644
+
+    - name: Download Nginx dashboard
+      get_url:
+        url: https://grafana.com/api/dashboards/12708/revisions/1/download
+        dest: /var/lib/grafana/dashboards/nginx.json
+        owner: grafana
+        group: grafana
+        mode: 0644
+
+    - name: Start and enable Grafana
+      systemd:
+        name: grafana-server
+        state: started
+        enabled: yes
+        daemon_reload: yes
+
+    - name: Wait for Grafana to start
+      wait_for:
+        port: "{{ grafana_port }}"
+        delay: 10
+        timeout: 60
+
+    - name: Show Grafana access info
+      debug:
+        msg: 
+          - "Grafana installed successfully!"
+          - "Access Grafana at: http://{{ ansible_default_ipv4.address }}:{{ grafana_port }}"
+          - "Default login: admin / admin"

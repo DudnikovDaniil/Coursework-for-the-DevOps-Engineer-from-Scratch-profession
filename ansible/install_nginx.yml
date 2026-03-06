@@ -1,0 +1,80 @@
+---
+- name: Install and configure Nginx on web servers
+  hosts: web
+  become: yes
+  vars:
+    site_dir: /var/www/html
+
+  tasks:
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+        cache_valid_time: 3600
+
+    - name: Install nginx
+      apt:
+        name: nginx
+        state: present
+
+    - name: Create website directory
+      file:
+        path: "{{ site_dir }}"
+        state: directory
+        owner: www-data
+        group: www-data
+        mode: '0755'
+
+    - name: Copy index.html
+      copy:
+        content: |
+          <!DOCTYPE html>
+          <html>
+          <head>
+              <title>DevOps Diploma</title>
+              <style>
+                  body {
+                      font-family: Arial, sans-serif;
+                      margin: 40px;
+                      text-align: center;
+                      background-color: #f0f0f0;
+                  }
+                  h1 {
+                      color: #333;
+                  }
+                  .server-info {
+                      background-color: #fff;
+                      padding: 20px;
+                      border-radius: 10px;
+                      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                  }
+              </style>
+          </head>
+          <body>
+              <h1>DevOps Diploma Project</h1>
+              <div class="server-info">
+                  <h2>Server Information</h2>
+                  <p>Hostname: {{ ansible_hostname }}</p>
+                  <p>IP Address: {{ ansible_default_ipv4.address }}</p>
+                  <p>Nginx is successfully installed and configured!</p>
+              </div>
+          </body>
+          </html>
+        dest: "{{ site_dir }}/index.html"
+        owner: www-data
+        group: www-data
+        mode: '0644'
+
+    - name: Ensure nginx is running
+      service:
+        name: nginx
+        state: started
+        enabled: yes
+
+    - name: Test nginx configuration
+      command: nginx -t
+      register: nginx_test
+      changed_when: false
+
+    - name: Show nginx test result
+      debug:
+        msg: "{{ nginx_test.stdout }}"

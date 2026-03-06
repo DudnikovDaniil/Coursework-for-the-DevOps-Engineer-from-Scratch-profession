@@ -1,0 +1,34 @@
+[bastion]
+bastion ansible_host=89.169.137.73 ansible_user=ubuntu
+
+[web]
+web1 ansible_host=10.10.2.24 ansible_user=ubuntu
+web2 ansible_host=10.20.2.32 ansible_user=ubuntu
+
+[prometheus]
+prometheus ansible_host=10.10.2.19 ansible_user=ubuntu
+
+[grafana]
+grafana ansible_host=89.169.149.43 ansible_user=ubuntu
+
+# Приватные серверы (доступ через bastion)
+[private:children]
+web
+prometheus
+
+# Публичные серверы (прямой доступ)
+[public:children]
+bastion
+grafana
+
+# Общие переменные для всех
+[all:vars]
+ansible_ssh_private_key_file=/home/dudnikov-daniil/.ssh/id_rsa
+
+# Специальные настройки для приватных серверов
+[private:vars]
+ansible_ssh_common_args='-o ProxyCommand="ssh -W %h:%p -i /home/dudnikov-daniil/.ssh/id_rsa ubuntu@89.169.137.73"'
+
+# Публичные серверы подключаются напрямую
+[public:vars]
+ansible_ssh_common_args=''

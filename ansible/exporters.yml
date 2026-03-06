@@ -1,0 +1,179 @@
+---
+- name: Install Node Exporter and Nginx Exporter on web servers
+  hosts: web
+  become: yes
+  vars:
+    node_exporter_version: "1.6.1"
+    nginx_exporter_version: "0.11.0"
+
+  tasks:
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+        cache_valid_time: 3600
+
+    - name: Install required packages
+      apt:
+        name:
+          - wget
+          - tar
+          - systemd
+        state: present
+
+    # Node Exporter
+    - name: Download Node Exporter
+      get_url:
+        url: "https://github.com/prometheus/node_exporter/releases/download/v{{ node_exporter_version }}/node_exporter-{{ node_exporter_version }}.linux-amd64.tar.gz"
+        dest: "/tmp/node_exporter.tar.gz"
+
+    - name: Extract Node Exporter
+      unarchive:
+        src: "/tmp/node_exporter.tar.gz"
+        dest: "/tmp"
+        remote_src: yes
+        creates: "/tmp/node_exporter-{{ node_exporter_version }}.linux-amd64"
+
+    - name: Install Node Exporter
+      copy:
+        src: "/tmp/node_exporter-{{ node_exporter_version }}.linux-amd64/node_exporter"
+        dest: "/usr/local/bin/node_exporter"
+        mode: '0755'
+        remote_src: yes
+
+    - name: Create Node Exporter systemd service
+      copy:
+        dest: /etc/systemd/system/node_exporter.service
+        content: |
+          [Unit]
+          Description=Node Exporter
+          After=network.target
+
+          [Service]
+          User=nobody
+          Group=nogroup
+          Type=simple
+          ExecStart=/usr/local/bin/node_exporter
+
+          [Install]
+          WantedBy=multi-user.target
+
+    - name: Start and enable Node Exporter
+      systemd:
+        name: node_exporter
+        state: started
+        enabled: yes
+        daemon_reload: yes
+
+    # Nginx Exporter
+    - name: Download Nginx Exporter
+      get_url:
+        url: "https://github.com/nginxinc/nginx-prometheus-exporter/releases/download/v{{ nginx_exporter_version }}/nginx-prometheus-exporter_{{ nginx_exporter_version }}_linux_amd64.tar.gz"
+        dest: "/tmp/nginx_exporter.tar.gz"
+      ignore_errors: yes
+
+    - name: Alternative download if first fails
+      get_url:
+        url: "https://github.com/nginxinc/nginx-prometheus-exporter/releases/download/v0.11.0/nginx-prometheus-exporter_0.11.0_linux_amd64.tar.gz"
+        dest: "/tmp/nginx_exporter.tar.gz"
+      when: nginx_exporter_version == "0.11.0"
+
+    - name: Extract Nginx Exporter
+      unarchive:
+        src: "/tmp/nginx_exporter.tar.gz"
+        dest: "/tmp"
+        remote_src: yes
+        creates: "/tmp/nginx-prometheus-exporter"
+
+    - name: Install Nginx Exporter
+      copy:
+        src: "/tmp/nginx-prometheus-exporter"
+        dest: "/usr/local/bin/nginx_exporter"
+        mode: '0755'
+        remote_src: yes
+
+    # Настройка Nginx status page
+    - name: Create nginx status configuration
+      copy:
+        dest: /etc/nginx/conf.d/status.conf
+        content: |
+          server {
+              listen 127.0.0.1:80;
+              server_name localhost;
+              
+              location /nginx_status {
+                  stub_status on;
+                  access_log off;
+                  allow 127.0.0.1;
+                  deny all;
+              }
+          }
+
+    - name: Test nginx configuration
+      command: nginx -t
+      register: nginx_test
+      changed_when: false
+      ignore_errors: yes
+
+    - name: Show nginx test result
+      debug:
+        msg: "{{ nginx_test.stderr }}"
+
+    - name: Restart nginx
+      systemd:
+        name: nginx
+        state: restarted
+      when: nginx_test.rc == 0
+
+    - name: Create Nginx Exporter systemd service
+      copy:
+        dest: /etc/systemd/system/nginx_exporter.service
+        content: |
+          [Unit]
+          Description=Nginx Exporter
+          After=network.target
+
+          [Service]
+          User=nobody
+          Group=nogroup
+          Type=simple
+          ExecStart=/usr/local/bin/nginx_exporter -nginx.scrape-uri=http://localhost/nginx_status
+
+          [Install]
+          WantedBy=multi-user.target
+
+    - name: Start and enable Nginx Exporter
+      systemd:
+        name: nginx_exporter
+        state: started
+        enabled: yes
+        daemon_reload: yes
+
+    - name: Clean up temporary files
+      file:
+        path: "{{ item }}"
+        state: absent
+      loop:
+        - "/tmp/node_exporter.tar.gz"
+        - "/tmp/nginx_exporter.tar.gz"
+        - "/tmp/node_exporter-{{ node_exporter_version }}.linux-amd64"
+        - "/tmp/nginx-prometheus-exporter"
+
+    - name: Verify Node Exporter is running
+      command: curl -s http://localhost:9100/metrics
+      register: node_check
+      changed_when: false
+      ignore_errors: yes
+
+    - name: Verify Nginx Exporter is running
+      command: curl -s http://localhost:9113/metrics
+      register: nginx_exporter_check
+      changed_when: false
+      ignore_errors: yes
+
+    - name: Show Node Exporter status
+      debug:
+        msg: "Node Exporter is {{ 'OK' if node_check.rc == 0 else 'FAILED' }}"
+
+    - name: Show Nginx Exporter status
+      debug:
+        msg: "Nginx Exporter is {{ 'OK' if nginx_exporter_check.rc == 0 else 'FAILED' }}"
