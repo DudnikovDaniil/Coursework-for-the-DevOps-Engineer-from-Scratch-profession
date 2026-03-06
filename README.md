@@ -94,6 +94,6 @@
 
 <div align="center">
 
-  [ Наверх](#coursework-for-the-devops-engineer-from-scratch-profession)
+  [В начало](#coursework-for-the-devops-engineer-from-scratch-profession)
 
 </div>
